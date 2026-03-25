@@ -16,7 +16,9 @@ ABasePlayerCharacter::ABasePlayerCharacter()
 void ABasePlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	check(GEngine != nullptr);
+
 	// Get the player controller for this character
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
@@ -40,8 +42,13 @@ void ABasePlayerCharacter::Tick(float DeltaTime)
 void ABasePlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	if(UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent)) {
+		// 2D bind movement
 		EnhancedInputComponent->BindAction(MoveForwardAction, ETriggerEvent::Triggered, this, &ABasePlayerCharacter::MoveForward);
 		EnhancedInputComponent->BindAction(MoveRightAction, ETriggerEvent::Triggered, this, &ABasePlayerCharacter::MoveRight);
+
+		// bind jump inheritance from parent class
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 	}
 }
 
