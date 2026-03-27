@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-
+#include "Camera/CameraComponent.h"
 // enhanced input headers
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -42,11 +42,35 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
 	TObjectPtr<UInputAction> JumpAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Input")
+	TObjectPtr<UInputAction> LookAction;
+
+public:
 	UFUNCTION()
 	void MoveForward(const FInputActionValue& Value);
 	UFUNCTION()
 	void MoveRight(const FInputActionValue& Value);
+	UFUNCTION()
+	void Look(const FInputActionValue& Value);
 
+	// Camera
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+	TObjectPtr<UCameraComponent> FirstPersonCameraComponent;
+
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	FVector FirstPersonCameraOffset = FVector(0.0f, -31,940952, 33,296291);
+
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	float FirstPersonFieldOfView = 70.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Camera")
+	float FirstPersonScale = 0.6f;
+
+	// Mesh
+	UPROPERTY(VisibleAnywhere, Category = "Mesh")
+	TObjectPtr<USkeletalMeshComponent> FirstPersonMeshComponent;
+
+private:
 	bool bCheckControllerExists() const;
 
 public:	
