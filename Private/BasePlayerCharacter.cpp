@@ -50,6 +50,21 @@ void ABasePlayerCharacter::BeginPlay()
 	Super::BeginPlay();
 	check(GEngine != nullptr);
 
+	// Find your character's blueprint animation class and attach to its character blueprint.
+	static ConstructorHelpers::FClassFinder<UAnimInstance> AnimBPClass(TEXT("/Game/Blueprints/Anim/ABP_BasePlayerCharacterAnimation.ABP_BasePlayerCharacterAnimation_C"));
+	if(AnimBPClass.Succeeded()){
+		FirstPersonMeshComponent->SetAnimInstanceClass(AnimBPClass.Class);
+		GetMesh()->SetAnimInstanceClass(AnimBPClass.Class);
+	}
+
+	if(FirstPersonDefaultAnim != nullptr){
+		// Set the animations on the first person mesh.
+		FirstPersonMeshComponent->SetAnimInstanceClass(FirstPersonDefaultAnim->GeneratedClass);
+		// Set the animations on the 3rd person mesh (for multiplayer settings purpose).
+		GetMesh()->SetAnimInstanceClass(FirstPersonDefaultAnim->GeneratedClass);
+		UE_LOG(LogTemp, Warning, TEXT("FirstPersonDefaultAnim class has been generated"));
+	}
+
 	// Only owning player can see first person mesh. (Invisible for the other player).
 	FirstPersonMeshComponent->SetOnlyOwnerSee(true);
 	// Hide 3rd mesh to owner.

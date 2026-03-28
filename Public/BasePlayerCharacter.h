@@ -13,6 +13,7 @@
 #include "BasePlayerCharacter.generated.h"
 
 // forwards declaration
+class UAnimBlueprint;
 class UInputMappingContext;
 class UInputAction;
 class UInputComponent;
@@ -58,7 +59,7 @@ public:
 	TObjectPtr<UCameraComponent> FirstPersonCameraComponent;
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
-	FVector FirstPersonCameraOffset = FVector(0.0f, -31,940952, 33,296291);
+	FVector FirstPersonCameraOffset = FVector(0.0f, -31.940952f, 33.296291f);
 
 	UPROPERTY(EditAnywhere, Category = "Camera")
 	float FirstPersonFieldOfView = 70.0f;
@@ -69,6 +70,10 @@ public:
 	// Mesh
 	UPROPERTY(VisibleAnywhere, Category = "Mesh")
 	TObjectPtr<USkeletalMeshComponent> FirstPersonMeshComponent;
+
+	// Animation
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	TObjectPtr<UAnimBlueprint> FirstPersonDefaultAnim;
 
 private:
 	bool bCheckControllerExists() const;
